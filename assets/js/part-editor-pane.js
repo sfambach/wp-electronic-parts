@@ -310,7 +310,7 @@
 					markDirty();
 				});
 			} else if (type === 'measure') {
-				var measure = current && typeof current === 'object' ? current : { value: '', unit_term_id: 0 };
+				var measure = current && typeof current === 'object' ? current : { value: '', unit: 0 };
 				var valInput = el('input', {
 					type: 'number',
 					step: 'any',
@@ -324,14 +324,14 @@
 						el('option', {
 							value: val,
 							text: lab,
-							selected: String(measure.unit_term_id || 0) === val
+							selected: String(measure.unit || 0) === val
 						})
 					);
 				});
 				function syncMeasure() {
 					values[key] = {
 						value: valInput.value === '' ? '' : Number(valInput.value),
-						unit_term_id: Number(unitSelect.value) || 0
+						unit: Number(unitSelect.value) || 0
 					};
 					markDirty();
 				}
