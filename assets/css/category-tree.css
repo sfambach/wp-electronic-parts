@@ -1,0 +1,336 @@
+.wpep-catalog-wrap {
+	margin-top: 1em;
+}
+
+.wpep-catalog {
+	display: grid;
+	grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+	gap: 0;
+	min-height: 70vh;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+}
+
+.wpep-catalog__tree-pane {
+	border-right: 1px solid #c3c4c7;
+	padding: 0.75em;
+	background: #f6f7f7;
+	overflow: auto;
+}
+
+.wpep-catalog__editor-pane {
+	padding: 1em 1.25em;
+	overflow: auto;
+	min-width: 0;
+}
+
+.wpep-tree-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35em;
+	margin-bottom: 0.75em;
+}
+
+.wpep-tree-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35em;
+	margin-top: 1em;
+}
+
+.wpep-tree,
+.wpep-tree__children {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wpep-tree__children {
+	margin-left: 0.85em;
+	padding-left: 0.55em;
+	border-left: 1px solid #c3c4c7;
+}
+
+.wpep-tree__children.is-collapsed {
+	display: none;
+}
+
+.wpep-tree__node {
+	margin: 0;
+}
+
+.wpep-tree__row {
+	display: flex;
+	align-items: center;
+	gap: 0.15em;
+	padding: 0.15em 0.25em;
+	border-radius: 2px;
+}
+
+.wpep-tree__row:hover {
+	background: #eef0f1;
+}
+
+.wpep-tree__row.is-active {
+	background: #dcdcde;
+}
+
+.wpep-tree__toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	color: #50575e;
+	flex: 0 0 auto;
+}
+
+.wpep-tree__toggle--spacer {
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.wpep-tree__toggle .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+.wpep-tree__name {
+	appearance: none;
+	border: none;
+	background: transparent;
+	padding: 0.15em 0.25em;
+	margin: 0;
+	font: inherit;
+	color: #1d2327;
+	text-align: left;
+	cursor: pointer;
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.wpep-tree__name:hover {
+	color: #2271b1;
+}
+
+.wpep-tree__row-end {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.1em;
+	flex: 0 0 auto;
+	margin-left: auto;
+}
+
+.wpep-tree__count {
+	appearance: none;
+	border: none;
+	background: #dcdcde;
+	color: #1d2327;
+	border-radius: 999px;
+	min-width: 1.6em;
+	height: 1.6em;
+	padding: 0 0.4em;
+	font-size: 11px;
+	line-height: 1.6em;
+	cursor: pointer;
+}
+
+.wpep-tree__count:hover {
+	background: #2271b1;
+	color: #fff;
+}
+
+.wpep-tree__icon-btn {
+	appearance: none;
+	border: none;
+	background: transparent;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	color: #50575e;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.wpep-tree__icon-btn:hover {
+	color: #2271b1;
+}
+
+.wpep-tree__icon-btn--danger:hover {
+	color: #b32d2e;
+}
+
+.wpep-tree__icon-btn .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+.wpep-editor-empty {
+	color: #646970;
+	max-width: 36em;
+}
+
+.wpep-editor-status {
+	margin: 0.75em 0;
+}
+
+.wpep-params-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+	margin: 0.75em 0 1em;
+}
+
+.wpep-param-card {
+	border: 1px solid #dcdcde;
+	padding: 0.75em;
+	background: #fbfbfc;
+}
+
+.wpep-param-card__row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75em 1em;
+	align-items: flex-end;
+	margin-bottom: 0.5em;
+}
+
+.wpep-param-card label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.wpep-param-extras label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	max-width: 28em;
+}
+
+.wpep-parts-list-pane__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em;
+	margin: 1em 0 0.75em;
+}
+
+.wpep-parts-list-pane__header h2 {
+	margin: 0;
+}
+
+.wpep-parts-list-pane--embedded {
+	margin-top: 1.5em;
+	padding-top: 1em;
+	border-top: 1px solid #dcdcde;
+}
+
+.wpep-parts-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #dcdcde;
+}
+
+.wpep-parts-list__item {
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	padding: 0.55em 0.75em;
+	border-bottom: 1px solid #dcdcde;
+	cursor: pointer;
+}
+
+.wpep-parts-list__item:last-child {
+	border-bottom: none;
+}
+
+.wpep-parts-list__item:hover {
+	background: #f0f6fc;
+}
+
+.wpep-parts-list__name {
+	font-weight: 600;
+}
+
+.wpep-parts-list__title {
+	color: #646970;
+	font-size: 12px;
+}
+
+.wpep-part-categories {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	max-height: 12em;
+	overflow: auto;
+	padding: 0.35em 0;
+}
+
+.wpep-part-categories__item {
+	display: block;
+}
+
+.wpep-part-fields {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85em;
+	margin: 1em 0;
+}
+
+.wpep-part-field label {
+	display: block;
+}
+
+.wpep-measure-fields {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+}
+
+.wpep-delete-dialog {
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 1.25em;
+	max-width: 28em;
+}
+
+.wpep-delete-dialog::backdrop {
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.wpep-delete-dialog__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	margin-top: 1em;
+}
+
+@media (max-width: 960px) {
+	.wpep-catalog {
+		grid-template-columns: 1fr;
+		min-height: 0;
+	}
+
+	.wpep-catalog__tree-pane {
+		border-right: none;
+		border-bottom: 1px solid #c3c4c7;
+		max-height: 40vh;
+	}
+}

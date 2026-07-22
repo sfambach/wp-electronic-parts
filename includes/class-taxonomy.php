@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers the hierarchical part_category taxonomy.
  *
- * Term meta and custom node properties can be added here later.
+ * Custom property schemas are stored as term meta (see Category_Properties).
  */
 final class Taxonomy {
 
@@ -29,6 +29,7 @@ final class Taxonomy {
 				'hierarchical'      => true,
 				'public'            => true,
 				'show_ui'           => true,
+				'show_in_menu'      => false,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
 				'rewrite'           => [ 'slug' => 'part-category' ],
@@ -45,7 +46,7 @@ final class Taxonomy {
 			'name'                       => __( 'Part Categories', 'wp-electronic-parts' ),
 			'singular_name'              => __( 'Part Category', 'wp-electronic-parts' ),
 			'menu_name'                  => __( 'Categories', 'wp-electronic-parts' ),
-			'all_items'                  => __( 'All Categories', 'wp-electronic-parts' ),
+			'all_items'                  => __( 'Categories', 'wp-electronic-parts' ),
 			'parent_item'                => __( 'Parent Category', 'wp-electronic-parts' ),
 			'parent_item_colon'          => __( 'Parent Category:', 'wp-electronic-parts' ),
 			'new_item_name'              => __( 'New Category Name', 'wp-electronic-parts' ),
@@ -62,7 +63,7 @@ final class Taxonomy {
 			'no_terms'                   => __( 'No categories', 'wp-electronic-parts' ),
 			'items_list_navigation'      => __( 'Category list navigation', 'wp-electronic-parts' ),
 			'items_list'                 => __( 'Category list', 'wp-electronic-parts' ),
-			'back_to_items'              => __( '&larr; Back to Categories', 'wp-electronic-parts' ),
+			'back_to_items'              => __( '&larr; Back to Category Tree', 'wp-electronic-parts' ),
 		];
 	}
 }

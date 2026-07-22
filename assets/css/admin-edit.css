@@ -1,0 +1,8 @@
+/**
+ * Hide the editable post title; name is entered via the Part Name meta box.
+ */
+.post-type-electronic_part #titlediv,
+.post-type-electronic_part .edit-post-visual-editor__post-title-wrapper,
+.post-type-electronic_part .editor-post-title {
+	display: none !important;
+}

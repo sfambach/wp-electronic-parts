@@ -1,0 +1,119 @@
+/* Category properties panel on term edit */
+.wpep-category-properties-panel {
+	margin: 1.5rem 0 2rem;
+	padding: 1rem 1.25rem 1.25rem;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.wpep-category-properties-panel h2 {
+	margin: 0 0 0.35rem;
+	padding: 0;
+	font-size: 1.2em;
+}
+
+.wpep-prop-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin: 1rem 0;
+}
+
+.wpep-prop-item {
+	padding: 0.85rem 1rem;
+	border: 1px solid #dcdcde;
+	border-radius: 2px;
+	background: #f6f7f7;
+}
+
+.wpep-prop-item__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+.wpep-prop-item__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+	gap: 0.75rem 1rem;
+}
+
+.wpep-prop-item__grid p {
+	margin: 0;
+}
+
+.wpep-prop-item__grid label span,
+.wpep-prop-extra label span {
+	display: block;
+	margin-bottom: 0.25rem;
+	font-weight: 600;
+}
+
+.wpep-prop-item__required {
+	display: flex;
+	align-items: flex-end;
+}
+
+.wpep-prop-extra {
+	margin-top: 0.75rem;
+}
+
+.wpep-prop-item[data-type]:not([data-type="enum"]):not([data-type="enum_multi"]) .wpep-prop-extra--enum,
+.wpep-prop-item[data-type]:not([data-type="measure"]) .wpep-prop-extra--measure,
+.wpep-prop-item[data-type]:not([data-type="term_children"]):not([data-type="term_children_multi"]) .wpep-prop-extra--term-children {
+	display: none;
+}
+
+/* Part property fields */
+.wpep-part-properties__group {
+	border: 1px solid #c3c4c7;
+	padding: 0.75rem 1rem 1rem;
+	margin: 0 0 1rem;
+}
+
+.wpep-part-properties__group legend {
+	padding: 0 0.35rem;
+	font-weight: 600;
+}
+
+.wpep-part-properties__field {
+	margin: 0 0 1rem;
+}
+
+.wpep-part-properties__field label {
+	display: block;
+	margin-bottom: 0.35rem;
+}
+
+.wpep-prop-key-hint {
+	margin-left: 0.35rem;
+	font-weight: 400;
+	opacity: 0.7;
+}
+
+.wpep-required {
+	color: #b32d2e;
+}
+
+.wpep-measure-fields {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.wpep-measure-fields .wpep-measure-value {
+	width: 10rem;
+	max-width: 100%;
+}
+
+.wpep-measure-fields .wpep-measure-unit {
+	min-width: 10rem;
+}
+
+.wpep-attachment-preview {
+	margin: 0.5rem 0 0;
+}

@@ -30,6 +30,11 @@ final class Plugin {
 		add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
 		add_action( 'init', [ Post_Type::class, 'register' ] );
 		add_action( 'init', [ Taxonomy::class, 'register' ] );
+		Part_Name::register();
+		Category_Tree::register();
+		Category_Properties::register();
+		Part_Properties::register();
+		Admin_Ajax::register();
 	}
 
 	public function load_textdomain(): void {
