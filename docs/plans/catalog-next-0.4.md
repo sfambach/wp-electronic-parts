@@ -7,6 +7,7 @@ baseline: "0.3.0"
 related_plans:
   - docs/plans/category-tree-layout.md
   - docs/plans/category-properties-mvp.md
+  - docs/plans/domain-vision-prototype.md
 todos:
   - id: list-search-page
     content: "0.4.0 Parts-Liste: Suche (Meta-Name) + Pagination + API total; bump-count auf total"
@@ -19,6 +20,9 @@ todos:
     status: pending
   - id: defer-domain
     content: "Später: DnD-Baum, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend"
+    status: pending
+  - id: vision-link
+    content: "Domain-Vision Prototyp (Prozesse, Calcs, Blöcke) — docs/plans/domain-vision-prototype.md"
     status: pending
 ---
 
@@ -253,6 +257,7 @@ Entscheidung: **Count-Badge = direkte Zuweisungen** (wie List ohne Search). Kein
 | Conditional Logic / Wiederholgruppen | Schema-Erweiterung |
 | Hartes Save-Blocking | Fehlerliste statt soft notices |
 | Block-Editor / Frontend | Archive, Query-Blöcke, Templates |
+| **Domain-Vision (Prototyp)** | Prozesse (Wareneingang→Bestand→BOM), Knoten-Calcs, Blöcke — siehe [`domain-vision-prototype.md`](domain-vision-prototype.md) |
 
 ## Iteration
 

@@ -6,6 +6,7 @@ version: "0.3.0"
 related_plans:
   - docs/plans/category-properties-mvp.md
   - docs/plans/catalog-next-0.4.md
+  - docs/plans/domain-vision-prototype.md
 todos:
   - id: shell-split
     content: "Admin-Shell: Tree links, rechts Mode-Container (empty|category|parts-list|part)"
@@ -224,6 +225,7 @@ Offene Punkte aus den Chats sind in **[`catalog-next-0.4.md`](catalog-next-0.4.m
 | 0.4.1 | Part-Editor | Media-Picker (`attachment`) |
 | 0.4.2 | Integrität | Parent-Zyklen, Count = direkte Zuweisungen |
 | später | Backlog | DnD, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend |
+| Vision | Prototyp | Prozesse, Bestand/BOM, Knoten-Calcs, Blöcke → [`domain-vision-prototype.md`](domain-vision-prototype.md) |
 
 ## Verfeinern
 
