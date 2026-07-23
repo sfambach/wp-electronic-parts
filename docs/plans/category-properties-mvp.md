@@ -5,6 +5,7 @@ status: implemented
 version: "0.2.0+"
 related_plans:
   - docs/plans/category-tree-layout.md
+  - docs/plans/catalog-next-0.4.md
 todos:
   - id: term-props
     content: "Category_Properties: Term-Meta Schema + Edit-UI (Typen, units_source_term_id, inheritance)"
@@ -110,4 +111,5 @@ SI-Normalisierung **nicht** im MVP.
 - SI-Umrechnung / sortierbarer Basiswert an Einheiten-Terms  
 - Conditional Logic, Wiederholgruppen, hartes Save-Blocking  
 - Frontend / Blocks  
-- Voller Media-Picker im Catalog Part-Editor (vs. ID-Feld)  
+
+**Media-Picker im Catalog** und weitere Folge-Themen: [`catalog-next-0.4.md`](catalog-next-0.4.md) (Slice 0.4.1 bzw. Backlog). 

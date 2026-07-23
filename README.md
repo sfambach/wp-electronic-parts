@@ -1,45 +1,44 @@
 # WP Electronic Parts
 
-WordPress plugin for managing electronic parts with a **hierarchical category tree**.
-
-Playground version (`0.1.0`) — enough to explore the admin UI and decide what custom term properties you need later.
+WordPress plugin for managing electronic parts with a hierarchical category tree, typed category properties, and an admin **Catalog** split-view.
 
 **Author:** Stefan Fambach  
-**Version:** 0.1.0  
-**License:** GPLv2 or later
+**Version:** 0.3.0  
+**License:** GPLv2 or later  
+**Requires:** WordPress 6.4+, PHP 8.0+
 
 ## What's included
 
 - Custom post type **Electronic Part** (`electronic_part`)
 - Hierarchical taxonomy **Part Categories** (`part_category`)
-- REST API enabled for both (Gutenberg-ready)
-- Admin column showing categories on the parts list
+- Part **Name** → auto-derived post title
+- **Category properties** (typed schema on terms) and values on parts
+- Admin **Catalog** split-view: category tree, category editor, parts list, part editor (AJAX)
+- Classic term/part metaboxes remain as a parallel path
+- REST API enabled for CPT and taxonomy
 
 ## Installation (local)
 
 1. Copy or symlink this folder into `wp-content/plugins/wp-electronic-parts/`
 2. Activate **WP Electronic Parts** under Plugins
-3. Open **Electronic Parts** in the admin menu
+3. Open **Catalog** in the admin menu
 
 After activation, visit **Settings → Permalinks** once and click **Save** so rewrite rules are flushed.
 
 ## Try it out
 
-1. Create a category tree, e.g.:
-   - Passive Components
-     - Resistors
-       - SMD 0805
-     - Capacitors
-   - Semiconductors
-     - Transistors
-2. Add a few **Electronic Parts** and assign them to categories
-3. Check the front end at `/parts/` and category archives at `/part-category/...`
+1. In **Catalog**, build a category tree (e.g. Passive → Resistors / Capacitors)
+2. Define parameters on a category (including `measure` with a units branch)
+3. Add parts from the tree or category pane and fill property values
+4. Optionally check classic edit screens still work
 
-## Planned next steps
+## Plans (source of truth)
 
-- Custom properties on category nodes (term meta)
-- Part-specific fields (MPN, footprint, value, datasheet URL, …)
-- Blocks or templates for browsing the tree
+| Plan | Status |
+|------|--------|
+| [`docs/plans/category-properties-mvp.md`](docs/plans/category-properties-mvp.md) | implemented (~0.2.0+) |
+| [`docs/plans/category-tree-layout.md`](docs/plans/category-tree-layout.md) | implemented (0.3.0) |
+| [`docs/plans/catalog-next-0.4.md`](docs/plans/catalog-next-0.4.md) | **planned** next slices |
 
 ## GitHub export
 

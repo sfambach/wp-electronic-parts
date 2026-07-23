@@ -5,6 +5,7 @@ status: implemented
 version: "0.3.0"
 related_plans:
   - docs/plans/category-properties-mvp.md
+  - docs/plans/catalog-next-0.4.md
 todos:
   - id: shell-split
     content: "Admin-Shell: Tree links, rechts Mode-Container (empty|category|parts-list|part)"
@@ -211,22 +212,19 @@ Siehe [`category-properties-mvp.md`](category-properties-mvp.md).
 5. Tree-UX-Fixes (Klicks/Icons) → Anlass für Split-View-Neuplanung  
 6. Split-View Catalog **0.3.0**
 
-## Nicht in diesem Slice / nächste Kandidaten
+## Folgeplanung
 
-Aus den Chats ausdrücklich zurückgestellt oder noch offen:
+Offene Punkte aus den Chats sind in **[`catalog-next-0.4.md`](catalog-next-0.4.md)** geschnitten:
 
-- Pagination / Suche in der Parts-Liste  
-- Drag-and-drop (Baum neu ordnen)  
-- Block-Editor / Frontend  
-- „All Parts“-Liste in WP-Admin durch Catalog ersetzen / integrieren  
-- SI-Umrechnung / Basiswert an Einheiten-Terms  
-- Eigene Taxonomie nur für Einheiten  
-- Conditional Logic, Wiederholgruppen, hartes Save-Blocking  
-- Media-Picker UX im Catalog Part-Editor (aktuell Attachment-ID-Feld)  
-- Feinschliff: Parent-Zyklen im Category-Editor, Count = WP term count vs. direkte Zuweisungen  
+| Priorität | Slice | Kurz |
+|-----------|-------|------|
+| 0.4.0 | Parts-Liste | Suche + Pagination |
+| 0.4.1 | Part-Editor | Media-Picker (`attachment`) |
+| 0.4.2 | Integrität | Parent-Zyklen, Count = direkte Zuweisungen |
+| später | Backlog | DnD, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend |
 
 ## Verfeinern
 
-1. Offene Punkte oben in eigene Folge-Pläne mit Todos schneiden  
-2. Bei Umbau diesen Spec-Stand mitziehen (State/Events/API)  
-3. Rekonstruktion: dieser Plan + Code unter `includes/` / `assets/js/`  
+1. Nächste Features nur gegen [`catalog-next-0.4.md`](catalog-next-0.4.md) umsetzen; diesen Spec bei API/Events mitziehen  
+2. Rekonstruktion: dieser Plan + Code unter `includes/` / `assets/js/`  
+3. Properties-Details: [`category-properties-mvp.md`](category-properties-mvp.md) 
