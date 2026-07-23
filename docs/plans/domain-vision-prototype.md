@@ -25,6 +25,9 @@ todos:
   - id: blocks
     content: "WP-Blöcke (Listen, Tabellen, Dropdowns) für Knoten"
     status: pending
+  - id: sibling-order
+    content: "Kind-Reihenfolge: manuelle sibling_order am Kind + optional Sort-Modus am Vater; nie Term-IDs tauschen"
+    status: pending
 ---
 
 # Domain-Vision (aus dem Prototypen)
@@ -38,6 +41,7 @@ Nahziel: Catalog-UX in [`catalog-next-0.4.md`](catalog-next-0.4.md) → **v1.x o
 |---------|---------|
 | Catalog Split-View, Properties, Listen-UX, Media, Integrität | **≤ 1.x** (aktuell 0.3 → 0.4 …) |
 | Generische Tree-/Knoten-Bausteine, ggf. erste Blöcke ohne Stock | **1.x** möglich |
+| **Kind-Reihenfolge** (manuell umschichten, DnD schreibt Order) | **1.x** (vor/mit DnD; Datenmodell früh) |
 | **Gesamte Bestandslogik** (Saldo, Wareneingang, Verbrauch buchen, BOM-Verfügbarkeit) | **ab 2.0** |
 | Prozess-Engine am Baum, die Bestandsbewegungen auslöst | **ab 2.0** |
 
@@ -123,6 +127,35 @@ flowchart TD
 
 Blöcke teilen das Baummodell mit dem Catalog — kein zweites Datenmodell.
 
+### 4. Reihenfolge der Kinder (nicht über IDs)
+
+**Problem:** Sortierung „nach Term-ID“ und Umschichten durch **ID-Tausch** ist falsch — IDs sind stabile Identitäten (Referenzen in BOM, Properties, Links).
+
+**Modell (Entscheidung):**
+
+| Wo | Was | Bedeutung |
+|----|-----|-----------|
+| **Kind** | Term-Meta `wpep_sibling_order` (int) | Position unter dem aktuellen Parent (0, 10, 20… oder dicht 1…n) |
+| **Vater** (optional) | Term-Meta `wpep_children_sort` | Modus: `manual` \| `name` \| `id` — *wie* die Kinder gelesen werden |
+
+```mermaid
+flowchart TD
+  Parent["Vaterknoten\nwpep_children_sort"] --> Mode{"Modus"}
+  Mode -->|manual| Ord["Kinder nach wpep_sibling_order"]
+  Mode -->|name| Name["Kinder nach Name"]
+  Mode -->|id| Id["Kinder nach term_id\nnur Fallback / Altbestand"]
+  Reorder["Umschichten / DnD"] --> Ord
+  Reorder -.->|"nie"| Ids["term_id tauschen"]
+```
+
+- **Umschichten** = `wpep_sibling_order` der Geschwister neu setzen (ggf. normalisieren), **keine** `term_id`-Änderung.
+- Der Vater steuert nur den **Sort-Modus**, nicht die Liste der IDs als einzige Wahrheitsquelle (vermeidet Doppelpflege beim Parent-Wechsel). Beim Wechsel des Parents: Order am Kind neu ans Ende der neuen Geschwisterliste hängen.
+- Heute im Catalog: `orderby => name` — bis Order existiert, bleibt Name; danach bei `manual` Meta-Order.
+
+**UI (später):** Hoch/Runter im Category-Editor oder DnD im Tree schreibt nur Order-Meta. API z. B. `wpep_reorder_siblings { parent_id, ordered_term_ids[] }`.
+
+**Passt zu BOM/Calcs:** Tabellenzeilen folgen derselben Kind-Reihenfolge wie der Baum.
+
 ---
 
 ## Einordnung
@@ -132,10 +165,11 @@ Blöcke teilen das Baummodell mit dem Catalog — kein zweites Datenmodell.
 | Taxonomie, Properties, Catalog-UI | Prozesse mit Bestandsbewegung |
 | optionale Calcs / BOM-Tabelle (read) | Wareneingang, Verbrauch × N, BOM-Check gegen Saldo |
 | Blöcke Listen/Dropdown/Tabelle ohne Stock | Bestandsanzeige, Buchungs-UI |
+| Kind-Reihenfolge (`sibling_order` + Sort-Modus am Vater) | — |
 
 **Reihenfolge:**
 
-1. **0.4 / 1.x** — Catalog-UX, Integrität; optional Calcs/Blöcke ohne Stock  
+1. **0.4 / 1.x** — Catalog-UX, Integrität; **sibling_order**-Modell + einfache Umordnung; optional Calcs/Blöcke ohne Stock  
 2. **2.0 Planung** — Ledger-Modell, Buchungsarten (WE, Verbrauch), BOM×Menge  
 3. **2.x** — UI-Prozesse am Baum, BOM-Check, Blöcke mit Bestandsspalten  
 

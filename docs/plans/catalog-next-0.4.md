@@ -250,7 +250,8 @@ Entscheidung: **Count-Badge = direkte Zuweisungen** (wie List ohne Search). Kein
 
 | Thema | Hinweis |
 |-------|---------|
-| Drag-and-drop Baum | Parent-Drop + Order; neues AJAX |
+| Drag-and-drop Baum | schreibt `wpep_sibling_order`; Sort-Modus am Vater — siehe Vision §4 |
+| Kind-Reihenfolge | Meta am Kind + optional `wpep_children_sort` am Vater; **keine ID-Täusche** |
 | WP „All Parts“ → Catalog | Redirect, Deep-Link `?part=` / `?category=` |
 | SI-Umrechnung | Faktor/Basis an Einheiten-Terms |
 | Eigene Einheiten-Taxonomie | bricht Kategoriezweig-Konvention |
