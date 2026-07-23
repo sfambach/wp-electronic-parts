@@ -224,7 +224,8 @@ Offene Punkte aus den Chats sind in **[`catalog-next-0.4.md`](catalog-next-0.4.m
 | 0.4.0 | Parts-Liste | Suche + Pagination |
 | 0.4.1 | Part-Editor | Media-Picker (`attachment`) |
 | 0.4.2 | Integrität | Parent-Zyklen, Count = direkte Zuweisungen |
-| später | Backlog | DnD, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend |
+| später | Backlog | DnD (schreibt sibling_order), All-Parts→Catalog, SI, Conditional Logic, Frontend |
+| 1.x | Reihenfolge | `wpep_sibling_order` am Kind + Sort-Modus am Vater — nie IDs tauschen |
 | Vision | ab **2.0** | Bestand, Wareneingang, Verbrauch (BOM×N Platinen), BOM-Check → [`domain-vision-prototype.md`](domain-vision-prototype.md) |
 
 ## Verfeinern
