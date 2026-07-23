@@ -1,6 +1,6 @@
 ---
 name: Catalog Split-View & Domain Spec
-overview: "Gesamtbild aus den Chats: Part-Name, Kategoriebaum, Properties-MVP, Split-View Catalog (0.3.0). Basis zum Verfeinern und Rekonstruieren."
+overview: "Gesamtbild aus den Chats: Part-Name, Kategoriebaum, Properties-MVP, Split-View Catalog (0.3.0). Folge: catalog-next-0.4.md."
 status: implemented
 version: "0.3.0"
 related_plans:
@@ -185,6 +185,8 @@ sequenceDiagram
 | `wpep_resolve_schema` | Schema + Term-Choices für dynamische Part-Felder |
 
 Nonce: `wpep_admin_ui` (Delete separat: `wpep_delete_category`).
+
+> **Geplant 0.4.0:** `wpep_list_parts` um `search` / `page` / `per_page` und Antwortfelder `total`, `page`, `per_page` erweitern; Suche über Part-Name-Meta. Details: [`catalog-next-0.4.md`](catalog-next-0.4.md).
 
 ## Module (Ist-Stand 0.3.0)
 
