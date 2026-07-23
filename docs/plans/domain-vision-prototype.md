@@ -1,114 +1,157 @@
 ---
 name: Domain Vision from Prototype
-overview: "Erkenntnisse aus dem Prototypen: Prozesse am Baum, Knoten-Berechnungen, Gutenberg-Blöcke für Knoten. Horizon jenseits Catalog 0.4."
+overview: "Prozesse, Knoten-Calcs, Blöcke; gesamte Bestandslogik (Wareneingang, Verbrauch, BOM-Check) erst ab Version 2.0."
 status: discovery
-version: "vision"
+version: "vision → v2.0+"
 baseline: "0.3.0 + Prototyp-Spiel"
+target_stock: "2.0.0+"
 related_plans:
   - docs/plans/category-tree-layout.md
   - docs/plans/category-properties-mvp.md
   - docs/plans/catalog-next-0.4.md
 todos:
-  - id: processes
-    content: "Modell: Prozesse am Baum führen Aktionen auf Objekten aus (z.B. Wareneingang → Bestand)"
+  - id: v1-no-stock
+    content: "v1.x / 0.4: kein Bestand, kein Verbrauch, kein Wareneingang — nur Catalog/Schema/Blöcke-Vorbereitung"
+    status: pending
+  - id: processes-v2
+    content: "v2+: Prozesse am Baum (Wareneingang, Verbrauch aus BOM×Menge)"
+    status: pending
+  - id: stock-ledger-v2
+    content: "v2+: Bestandslogik (Ledger/Saldo) als eigenes Modul"
     status: pending
   - id: node-calcs
-    content: "Modell: Knoten-Berechnungen (z.B. Anzahl Kinder; BOM-Referenzen → Tabelle)"
+    content: "Knoten-Berechnungen (count; BOM-Tabelle) — Calcs ggf. schon vor Stock, Buchen erst v2"
     status: pending
   - id: blocks
-    content: "WP-Blöcke (Listen, Tabellen, Dropdowns) die mit Knoten umgehen können"
+    content: "WP-Blöcke (Listen, Tabellen, Dropdowns) für Knoten"
     status: pending
 ---
 
 # Domain-Vision (aus dem Prototypen)
 
-Persistiert aus dem Prototyp-Spiel. **Kein Implementierungs-Slice** — Orientierung für spätere Pläne.  
-Nahziel bleibt Catalog-UX in [`catalog-next-0.4.md`](catalog-next-0.4.md).
+Persistiert aus dem Prototyp-Spiel. **Kein Implementierungs-Slice für Bestand jetzt.**  
+Nahziel: Catalog-UX in [`catalog-next-0.4.md`](catalog-next-0.4.md) → **v1.x ohne Bestand**.
 
-## Kernerkenntnisse
+## Versionsgrenze (Entscheidung)
 
-### 1. Prozesse am Baum → Aktionen auf Objekten
+| Bereich | Version |
+|---------|---------|
+| Catalog Split-View, Properties, Listen-UX, Media, Integrität | **≤ 1.x** (aktuell 0.3 → 0.4 …) |
+| Generische Tree-/Knoten-Bausteine, ggf. erste Blöcke ohne Stock | **1.x** möglich |
+| **Gesamte Bestandslogik** (Saldo, Wareneingang, Verbrauch buchen, BOM-Verfügbarkeit) | **ab 2.0** |
+| Prozess-Engine am Baum, die Bestandsbewegungen auslöst | **ab 2.0** |
 
-Prozesse, die im Baum definiert sind, sollen **Aktionen auf Domänenobjekten** auslösen — nicht nur Meta anzeigen.
-
-| Beispiel | Ablauf |
-|----------|--------|
-| **Wareneingang** | Prozess am relevanten Ast → erzeugt/erhöht **Bestand** für Bauteile unter diesem Knoten |
-| **BOM-Check** | nutzt **Bestand**, um zu prüfen, ob alle benötigten Teile vorhanden sind |
+> Entscheidung: Bestand nicht „nebenbei“ in 0.x/1.x einstreuen — eigenes Major mit klarem Modell (Ledger, Buchungen, Historie).
 
 ```mermaid
 flowchart LR
-  Tree["Kategoriebaum / Knoten"] --> Proc["Prozess z.B. Wareneingang"]
-  Proc --> Action["Aktion auf Objekte"]
-  Action --> Stock["Bestand an Parts"]
-  Stock --> BOM["BOM-Check: alles da?"]
+  v03["0.3 Catalog"] --> v04["0.4 UX"]
+  v04 --> v1["1.x Catalog + optional Blöcke/Calcs read-only"]
+  v1 --> v2["2.0+ Bestand + Prozesse"]
 ```
 
-**Implikation:** Der Baum ist nicht nur Navigations-/Schema-Träger, sondern **Kontext für ausführbare Prozesse**. Objekte (Parts) und abgeleitete Zustände (Bestand) sind Prozess-Output bzw. -Input.
+---
 
-Offen (später klären):
+## Kernerkenntnisse
 
-- Wo lebt der Prozess? (Term-Meta, eigener CPT, Workflow-Plugin-Hook)
-- Idempotenz / Historie von Wareneingängen
-- Bestand: Post-Meta vs. eigenes Ledger
+### 1. Prozesse am Baum → Aktionen auf Objekten (**v2+**)
+
+Prozesse im Baum lösen **Aktionen auf Domänenobjekten** aus — nicht nur Meta anzeigen.
+
+| Prozess | Ablauf |
+|---------|--------|
+| **Wareneingang** | Kontext-Knoten → erhöht **Bestand** für betroffene Parts |
+| **BOM-Check** | liest Bestand → „alles da?“ für eine Stückliste |
+| **Verbrauch buchen** | BOM × **Anzahl Platinen** → entnimmt Bestand je Position |
+
+#### Szenario: BOM für 10 Platinen, Verbrauch buchen
+
+Bisher vor allem Wareneingang + Check angedacht. Neu aus dem Prototyp:
+
+1. Stückliste (BOM) am Knoten / Gerät definiert (Referenzen × Menge **pro Platine**)
+2. Nutzer wählt **Menge Fertigung** = 10 Platinen
+3. System rechnet Bedarf: `Soll[part] = BOM_qty[part] × 10`
+4. Optional vorher Check: `Bestand[part] >= Soll[part]` für alle Positionen
+5. **Verbrauch buchen**: Bestand verringern, Buchungssatz mit Bezug (BOM, Menge 10, Zeit, User)
+
+```mermaid
+flowchart TD
+  Bom["BOM am Knoten\nPart → qty/Platine"] --> Scale["× 10 Platinen"]
+  Scale --> Need["Soll-Mengen"]
+  Stock["Bestand v2"] --> Check["Verfügbarkeit?"]
+  Need --> Check
+  Check -->|ok| Book["Verbrauch buchen"]
+  Book --> Ledger["Bestandsbewegung −Soll"]
+```
+
+**Implikation:** Bestand braucht Bewegungen (Eingang/Ausgang), nicht nur einen Zähler ohne Historie — deshalb Major **2.0**.
+
+Offen (erst in v2-Plan klären):
+
+- Ledger-Tabelle vs. Post-Meta + Log-CPT
+- Teilbuchungen / Storno
+- Reservierung vs. sofortiger Verbrauch
+- Wo lebt der Prozess? (Term-Meta, CPT, Aktions-UI am Knoten)
 
 ### 2. Knoten-Berechnungen
 
-Knoten können **Berechnungen** tragen — Werte, die aus dem Teilbaum oder Referenzen abgeleitet werden.
+Knoten können **Berechnungen** tragen — abgeleitete Werte aus Teilbaum oder Referenzen.
 
-| Idee | Beispiel |
-|------|----------|
-| Aggregation | „Anzahl“ = Zahl der **Kinder** (oder direkt zugewiesener Parts) |
-| BOM / Referenzen | Referenzen + Anzahl → **Tabelle** (Stückliste) |
+| Idee | Beispiel | Frühestens |
+|------|----------|------------|
+| Aggregation | Anzahl Kinder / Parts | 1.x möglich (read-only) |
+| BOM-View | Referenzen + Menge → **Tabelle** | 1.x View ok; **Buchen erst 2.0** |
 
 ```mermaid
 flowchart TD
   Node["Knoten"] --> Calc["Berechnung"]
   Calc --> Count["count children / parts"]
   Calc --> Bom["BOM: Referenzen × Menge"]
-  Bom --> Table["Tabelle / Listenansicht"]
+  Bom --> Table["Tabelle"]
+  Bom -.->|"v2+"| Consume["× N Platinen → Verbrauch"]
 ```
 
-**Abgrenzung zum Properties-MVP:** Properties sind heute **Schema + gespeicherte Werte**. Berechnungen sind **abgeleitete Views** (read-time oder materialisiert). Nicht mit `measure`/`enum` vermischen, bis das Modell klar ist.
-
-Offen:
-
-- deklarative Calc-Typen vs. freie Formeln
-- Wann neu rechnen (Save Part, Term-Change, on-demand im Block)
+**Abgrenzung Properties-MVP:** Properties = Schema + gespeicherte Werte. Calcs = Ableitung. BOM-**Anzeige** kann vor Bestand kommen; BOM-**Buchung** nicht.
 
 ### 3. WordPress-Blöcke für Knoten
 
-Wenn die Plattform WP bleibt: **Standard-nahe Blöcke**, die mit Baumknoten umgehen:
+| Block-Idee | Rolle | Stock? |
+|------------|--------|--------|
+| Liste | Kinder / Parts eines Knotens | nein |
+| Tabelle | BOM-/Calc-Ergebnis | Anzeige 1.x; Bestandsspalten 2.0 |
+| Dropdown | Knoten-Auswahl | nein |
 
-| Block-Idee | Rolle |
-|------------|--------|
-| Liste | Kinder / Parts eines Knotens |
-| Tabelle | z. B. BOM-/Calc-Ergebnis |
-| Dropdown | Knoten-Auswahl (Filter, Kontext) |
+Blöcke teilen das Baummodell mit dem Catalog — kein zweites Datenmodell.
 
-Blöcke sind die **Frontend-/Content-Schicht** über dem gleichen Baummodell wie der Catalog-Admin — nicht ein zweites paralleles Datenmodell.
+---
 
-## Einordnung relativ zum aktuellen Plugin
+## Einordnung
 
-| Heute (≤0.3) | Vision |
-|--------------|--------|
-| Taxonomie + Properties + Catalog-UI | + Prozesse + Bestand + BOM |
-| Statische Feldwerte am Part | + berechnete Knotenwerte |
-| Admin-only Catalog | + Gutenberg-Blöcke (Listen/Tabellen/Dropdowns) |
+| ≤ 1.x | ab 2.0 |
+|-------|--------|
+| Taxonomie, Properties, Catalog-UI | Prozesse mit Bestandsbewegung |
+| optionale Calcs / BOM-Tabelle (read) | Wareneingang, Verbrauch × N, BOM-Check gegen Saldo |
+| Blöcke Listen/Dropdown/Tabelle ohne Stock | Bestandsanzeige, Buchungs-UI |
 
-**Empfohlene Reihenfolge (grob):**
+**Reihenfolge:**
 
-1. Catalog 0.4 (Listen-UX, Media, Integrität) — Bestandspflege Admin  
-2. Domänenmodell schärfen: Bestand + einfacher Prozess „Wareneingang“ (Spike)  
-3. Knoten-Calc „count“ als kleinster Ableitungstyp  
-4. Erster Block (Liste oder Dropdown auf Knoten)  
-5. BOM-Tabelle als Calc + Tabellen-Block  
+1. **0.4 / 1.x** — Catalog-UX, Integrität; optional Calcs/Blöcke ohne Stock  
+2. **2.0 Planung** — Ledger-Modell, Buchungsarten (WE, Verbrauch), BOM×Menge  
+3. **2.x** — UI-Prozesse am Baum, BOM-Check, Blöcke mit Bestandsspalten  
 
-Separates Repo **`wp-taxonomy-tree`**: Kandidat für generische Tree-/Knoten-/Block-Bausteine; Parts/Bestand/BOM bleiben domain-spezifisch in `wp-electronic-parts` (oder später geteilte Libs).
+`wp-taxonomy-tree`: generische Tree/Knoten/Blöcke.  
+`wp-electronic-parts`: Domäne Parts; **Bestandsmodul erst ab 2.0**.
 
-## Explizit noch nicht entschieden
+## Explizit geparkt bis 2.0
 
-- Eigenes Bestands-Ledger vs. Meta-Zähler  
-- Prozess-Engine vs. feste Aktions-Buttons am Knoten  
-- SI/Einheiten (weiter Backlog Properties)  
-- Ob BOM ein eigener CPT ist oder Calc am Knoten
+- Gesamte Bestandslogik (Saldo, Bewegungen, Historie)  
+- Wareneingang buchen  
+- Verbrauch buchen (inkl. BOM × N Platinen)  
+- Verfügbarkeits-Check gegen Bestand  
+- Reservierungen / Storno (falls nötig)
+
+## Offen (nicht blockierend für 0.4)
+
+- SI/Einheiten  
+- BOM als CPT vs. Calc am Knoten  
+- Prozess-Engine vs. feste Aktions-Buttons

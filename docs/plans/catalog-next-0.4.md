@@ -22,7 +22,7 @@ todos:
     content: "Später: DnD-Baum, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend"
     status: pending
   - id: vision-link
-    content: "Domain-Vision Prototyp (Prozesse, Calcs, Blöcke) — docs/plans/domain-vision-prototype.md"
+    content: "Domain-Vision: Bestand/Verbrauch/BOM-Buchung ab v2.0 — docs/plans/domain-vision-prototype.md"
     status: pending
 ---
 
@@ -257,7 +257,7 @@ Entscheidung: **Count-Badge = direkte Zuweisungen** (wie List ohne Search). Kein
 | Conditional Logic / Wiederholgruppen | Schema-Erweiterung |
 | Hartes Save-Blocking | Fehlerliste statt soft notices |
 | Block-Editor / Frontend | Archive, Query-Blöcke, Templates |
-| **Domain-Vision (Prototyp)** | Prozesse (Wareneingang→Bestand→BOM), Knoten-Calcs, Blöcke — siehe [`domain-vision-prototype.md`](domain-vision-prototype.md) |
+| **Domain-Vision (Prototyp)** | Prozesse/Calcs/Blöcke; **Bestand + Verbrauch (BOM×N) erst ab 2.0** — [`domain-vision-prototype.md`](domain-vision-prototype.md) |
 
 ## Iteration
 

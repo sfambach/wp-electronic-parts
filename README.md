@@ -39,7 +39,7 @@ After activation, visit **Settings → Permalinks** once and click **Save** so r
 | [`docs/plans/category-properties-mvp.md`](docs/plans/category-properties-mvp.md) | implemented (~0.2.0+) |
 | [`docs/plans/category-tree-layout.md`](docs/plans/category-tree-layout.md) | implemented (0.3.0) |
 | [`docs/plans/catalog-next-0.4.md`](docs/plans/catalog-next-0.4.md) | **planned** next slices |
-| [`docs/plans/domain-vision-prototype.md`](docs/plans/domain-vision-prototype.md) | **discovery** (Prozesse, Calcs, Blöcke) |
+| [`docs/plans/domain-vision-prototype.md`](docs/plans/domain-vision-prototype.md) | **discovery** → Bestand/Prozesse **ab 2.0** |
 
 ## GitHub export
 

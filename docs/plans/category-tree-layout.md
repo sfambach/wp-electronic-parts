@@ -225,7 +225,7 @@ Offene Punkte aus den Chats sind in **[`catalog-next-0.4.md`](catalog-next-0.4.m
 | 0.4.1 | Part-Editor | Media-Picker (`attachment`) |
 | 0.4.2 | Integrität | Parent-Zyklen, Count = direkte Zuweisungen |
 | später | Backlog | DnD, All-Parts→Catalog, SI/Einheiten-Taxonomie, Conditional Logic, Frontend |
-| Vision | Prototyp | Prozesse, Bestand/BOM, Knoten-Calcs, Blöcke → [`domain-vision-prototype.md`](domain-vision-prototype.md) |
+| Vision | ab **2.0** | Bestand, Wareneingang, Verbrauch (BOM×N Platinen), BOM-Check → [`domain-vision-prototype.md`](domain-vision-prototype.md) |
 
 ## Verfeinern
 
