@@ -156,6 +156,102 @@ flowchart TD
 
 **Passt zu BOM/Calcs:** Tabellenzeilen folgen derselben Kind-Reihenfolge wie der Baum.
 
+#### Sort-API (klar) — Strategy + Registry
+
+Kein „Objekt pro Sortiervorgang“ nötig. **Stateless Strategy** + **Registry** (kennt alle Implementierungen). Klassische Factory (neu erzeugen) lohnt hier nicht.
+
+```mermaid
+flowchart LR
+  Caller["Tree / BOM / Block"] --> Reg["Sibling_Sorter_Registry"]
+  Reg --> S1["Sort_By_Name"]
+  Reg --> S2["Sort_By_Order"]
+  Reg --> S3["… später Sort_By_*"]
+  Caller -->|"sort(id, list, direction)"| Out["sortierte Liste"]
+```
+
+**Interface (Instanz-Methoden, zustandslos):**
+
+```php
+interface Sibling_Sorter {
+	public function id(): string;           // z.B. 'name' | 'order'
+	public function label(): string;        // UI
+
+	/**
+	 * @param list<\WP_Term> $terms
+	 * @param 'asc'|'desc'   $direction
+	 * @return list<\WP_Term>
+	 */
+	public function sort( array $terms, string $direction = 'asc' ): array;
+}
+```
+
+Optional PHP 8.1+: `enum Sort_Direction: string { case Asc = 'asc'; case Desc = 'desc'; }`
+
+**Implementierungen (Beispiele):**
+
+| `id()` | Verhalten |
+|--------|-----------|
+| `name` | nach `$term->name` (natürlich/`strcasecmp`), dann stabile Tie-Break z. B. `term_id` |
+| `order` | nach Meta `wpep_sibling_order`, Tie-Break Name oder `term_id` |
+
+Beide: bei `desc` Ergebnis umdrehen bzw. Vergleich invertieren — **eine** Implementierung pro Kriterium, Direction als Parameter.
+
+**Registry (hält alle Strategien):**
+
+```php
+final class Sibling_Sorter_Registry {
+	/** @var array<string, Sibling_Sorter> */
+	private array $sorters = [];
+
+	public function register( Sibling_Sorter $sorter ): void {
+		$this->sorters[ $sorter->id() ] = $sorter;
+	}
+
+	public function has( string $id ): bool { /* … */ }
+
+	public function get( string $id ): Sibling_Sorter { /* Unknown → Fallback name */ }
+
+	/** @return array<string, string> id => label */
+	public function choices(): array { /* für Parent-Select */ }
+
+	/**
+	 * @param list<\WP_Term> $terms
+	 * @return list<\WP_Term>
+	 */
+	public function sort( string $id, array $terms, string $direction = 'asc' ): array {
+		return $this->get( $id )->sort( $terms, $direction );
+	}
+}
+```
+
+Vater-Meta `wpep_children_sort` speichert die **Sorter-`id()`** (+ optional Direction separat, z. B. `wpep_children_sort_dir`, Default `asc`).
+
+#### Dynamisch laden — wie „Factory kennt neue Impl“?
+
+PHP hat **keine** eingebaute „finde alle Klassen die Interface X implementieren“. Optionen:
+
+| Ansatz | Pros | Empfohlen? |
+|--------|------|------------|
+| **Hook** `wpep_register_sibling_sorters` → Plugins rufen `$registry->register( new X )` | WP-idiomatisch, echt erweiterbar | **ja** |
+| Explizite Liste im Bootstrap | einfach, klar | ja für Core-Sorter |
+| Ordner scannen + Reflection | magisch, fragil, langsam | nein |
+| Composer-Plugin / Attribute-Discovery | overkill für WP-Plugin | nein |
+
+Core registriert `name` + `order` beim `plugins_loaded`/`init`; Dritte hängen sich an den Hook.
+
+#### Statisch vs. Instanz?
+
+| | Statische Methoden | Stateless-Instanz (Vorschlag) |
+|--|--------------------|-------------------------------|
+| PHP-Interface | Interfaces beschreiben **Instanzen**; `static` in Interfaces geht erst eingeschränkt / unüblich | passt naturgemäß |
+| Registry | speichert `callable` / class-string | speichert `Sibling_Sorter`-Objekte |
+| Tests / Mock | umständlicher | einfach |
+| Zustand | keiner nötig | keiner — eine Instanz reicht für immer |
+
+**Empfehlung:** zustandslose **Klassen-Instanzen** (einmal `new Sort_By_Name()`, registrieren). Kein State pro Sort-Aufruf. „Statisch“ ist in PHP möglich (`Sort_By_Name::sort( $list, $dir )`), aber dann eher Registry von Callables — weniger typsicher am Interface. In Java/C# analog: Strategy-Interface + Singleton/DI; static utility ohne Polymorphie.
+
+Für `wp-taxonomy-tree` später: gleiches Interface generisch über `list<object>` + Accessor, hier zuerst an `\WP_Term` gebunden.
+
 ---
 
 ## Einordnung
